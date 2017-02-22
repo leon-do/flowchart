@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="jquery.flowchart.css">
+  <style>
+    #example_1{
+      border:1px solid grey;
+      height:500px;
+    }
+  </style>
+</head>
+<body>
+  
+
+
+
+
+  <button class='create_operator'>Create</button>
+  <button class='delete_selected_button'>Delete</button>
+  <br>
+  <span>Edit Question</span> <input type='text' id='operator_title'>
+  <br>
+  <span>Edit Option 1</span> <input type='text' class='output' id='operator_output1'>
+  <br>
+  <span>Edit Option 2</span> <input type='text' class='output' id='operator_output2'>
+
+  <div id='example_1'></div>
+
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src='./jquery.flowchart.js' type="text/javascript"></script>
+
+  <script>
+    $(document).ready(function() {
+      var data;
+
+      // Apply the plugin on a standard, empty div...
+      var $flowchart = $('#example_1');
+      $flowchart.flowchart({
+        data: data
+      });
+      
+      var operatorI = 0;
+      $flowchart.siblings('.create_operator').click(function() {
+        var operatorId = 'created_operator_' + operatorI;
+        var operatorData = {
+          top: 10,
+          left: 10,
+          properties: {
+            title: 'Question ' + (operatorI),
+            inputs: {
+              input_1: {
+                label: '',
+              }
+            },
+            outputs: {
+              output_1: {
+                label: 'Option 1',
+              },
+              output_2: {
+                label: 'Option 2',
+              }
+            }
+          }
+        };
+        
+        operatorI++;
+        
+
+        // creates boxes
+        $flowchart.flowchart('createOperator', operatorId, operatorData);
+
+      });
+      
+
+      // deletes boxes
+      $flowchart.siblings('.delete_selected_button').click(function() {
+        $flowchart.flowchart('deleteSelected');
+      });
+    
+      // edit Title
+      $('#operator_title').keyup(function() {
+        var selectedOperatorId = $flowchart.flowchart('getSelectedOperatorId');
+        if (selectedOperatorId != null) {
+          $flowchart.flowchart('setOperatorTitle', selectedOperatorId, $('#operator_title').val());
+        }
+      });
+
+
+      //edit output
+      $flowchart.siblings('.output').keyup(function() {
+        var selectedOperatorId = $flowchart.flowchart('getSelectedOperatorId');
+        var data = $flowchart.flowchart('getData');
+        //output1val
+        if (selectedOperatorId != null) {
+          data.operators[selectedOperatorId].properties.outputs.output_1.label = $('#operator_output1').val()
+          data.operators[selectedOperatorId].properties.outputs.output_2.label = $('#operator_output2').val()
+          $flowchart.flowchart('setData', data);
+        }
+
+
+      //delete lines
+      $flowchart.siblings('.delete_selected_button').click(function() {
+        $flowchart.flowchart('deleteSelected');
+      });
+
+
+      });
+
+
+
+    });
+</script>
+</body>
+</html>
