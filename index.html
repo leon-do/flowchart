@@ -4,7 +4,7 @@
   <title></title>
   <link rel="stylesheet" type="text/css" href="jquery.flowchart.css">
   <style>
-    #example_1{
+    #border{
       border:1px solid grey;
       height:500px;
     }
@@ -24,9 +24,10 @@
   <span>Edit Option 1</span> <input type='text' class='output' id='operator_output1'>
   <br>
   <span>Edit Option 2</span> <input type='text' class='output' id='operator_output2'>
-
-  <div id='example_1'></div>
-
+  <br>
+  <button class='save_data'>Save</button>
+  <div id='border'></div>
+  <div id='flowchart_data'></div>
 
 
 
@@ -41,11 +42,13 @@
       var data;
 
       // Apply the plugin on a standard, empty div...
-      var $flowchart = $('#example_1');
+      var $flowchart = $('#border');
       $flowchart.flowchart({
         data: data
       });
       
+    
+    // creates boxe starting with box 0
       var operatorI = 0;
       $flowchart.siblings('.create_operator').click(function() {
         var operatorId = 'created_operator_' + operatorI;
@@ -73,7 +76,6 @@
         operatorI++;
         
 
-        // creates boxes
         $flowchart.flowchart('createOperator', operatorId, operatorData);
 
       });
@@ -104,15 +106,14 @@
           $flowchart.flowchart('setData', data);
         }
 
-
-      //delete lines
-      $flowchart.siblings('.delete_selected_button').click(function() {
-        $flowchart.flowchart('deleteSelected');
       });
 
 
+      //save layout
+      $flowchart.siblings('.save_data').click(function() {
+        var data = $flowchart.flowchart('getData');
+        $('#flowchart_data').html(`<pre> ${JSON.stringify(data, null, 2)} <pre>`);
       });
-
 
 
     });
