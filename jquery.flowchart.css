@@ -117,7 +117,8 @@
 }
 
 .flowchart-operator.selected {
-    border-color: #555;
+    border-color: #2196F3;
+    border-width: 3px;
 }
 
 
